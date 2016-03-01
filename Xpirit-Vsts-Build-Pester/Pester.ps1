@@ -17,4 +17,4 @@ Import-Module $modulePath -DisableNameChecking -Verbose
 
 $outputFile = Join-Path $env:BUILD_SOURCESDIRECTORY "TEST-pester.xml"
 
-Invoke-Pester $ItemSpec -Outputformat nunitxml -Outputfile $outputFile
+Invoke-Pester $ItemSpec -PassThru -Outputformat nunitxml -Outputfile $outputFile

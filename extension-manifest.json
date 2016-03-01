@@ -1,10 +1,10 @@
 {
   "manifestVersion": 1,
-  "id": "PeterGroenewegen-Xpirit-Vsts-Build-Pester-Test",
+  "id": "PeterGroenewegen-Xpirit-Vsts-Build-Pester",
   "name": "Pester unittest build task",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "publisher": "petergroenewegen",
-  "public": false,
+  "public": true,
   "targets": [
     {
       "id": "Microsoft.VisualStudio.Services"
