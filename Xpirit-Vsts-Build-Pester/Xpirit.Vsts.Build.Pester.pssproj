@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8e38ded5-5b6e-4864-8efa-7a5009f32676}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>MyApplication</RootNamespace>
+    <AssemblyName>MyApplication</AssemblyName>
+    <Name>Xpirit.Vsts.Build.UnZip</Name>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Pester.ps1" />
+    <Compile Include="Pester\Functions\Assertions\Be.ps1" />
+    <Compile Include="Pester\Functions\Assertions\Be.Tests.ps1" />
+    <Compile Include="Pester\Functions\Assertions\BeGreaterThan.ps1" />
+    <Compile Include="Pester\Functions\Assertions\BeGreaterThan.Tests.ps1" />
+    <Compile Include="Pester\Functions\Assertions\BeLessThan.ps1" />
+    <Compile Include="Pester\Functions\Assertions\BeLessThan.Tests.ps1" />
+    <Compile Include="Pester\Functions\Assertions\BeLike.ps1" />
+    <Compile Include="Pester\Functions\Assertions\BeLike.Tests.ps1" />
+    <Compile Include="Pester\Functions\Assertions\BeLikeExactly.ps1" />
+    <Compile Include="Pester\Functions\Assertions\BeLikeExactly.Tests.ps1" />
+    <Compile Include="Pester\Functions\Assertions\BeNullOrEmpty.ps1" />
+    <Compile Include="Pester\Functions\Assertions\BeNullOrEmpty.Tests.ps1" />
+    <Compile Include="Pester\Functions\Assertions\BeOfType.ps1" />
+    <Compile Include="Pester\Functions\Assertions\BeOfType.Tests.ps1" />
+    <Compile Include="Pester\Functions\Assertions\Contain.ps1" />
+    <Compile Include="Pester\Functions\Assertions\Contain.Tests.ps1" />
+    <Compile Include="Pester\Functions\Assertions\ContainExactly.ps1" />
+    <Compile Include="Pester\Functions\Assertions\ContainExactly.Tests.ps1" />
+    <Compile Include="Pester\Functions\Assertions\Exist.ps1" />
+    <Compile Include="Pester\Functions\Assertions\Exist.Tests.ps1" />
+    <Compile Include="Pester\Functions\Assertions\Match.ps1" />
+    <Compile Include="Pester\Functions\Assertions\Match.Tests.ps1" />
+    <Compile Include="Pester\Functions\Assertions\MatchExactly.ps1" />
+    <Compile Include="Pester\Functions\Assertions\MatchExactly.Tests.ps1" />
+    <Compile Include="Pester\Functions\Assertions\PesterThrow.ps1" />
+    <Compile Include="Pester\Functions\Assertions\PesterThrow.Tests.ps1" />
+    <Compile Include="Pester\Functions\Assertions\Set-TestInconclusive.ps1" />
+    <Compile Include="Pester\Functions\Assertions\Should.ps1" />
+    <Compile Include="Pester\Functions\Assertions\Should.Tests.ps1" />
+    <Compile Include="Pester\Functions\Assertions\Test-Assertion.ps1" />
+    <Compile Include="Pester\Functions\BreakAndContinue.Tests.ps1" />
+    <Compile Include="Pester\Functions\Context.ps1" />
+    <Compile Include="Pester\Functions\Context.Tests.ps1" />
+    <Compile Include="Pester\Functions\Coverage.ps1" />
+    <Compile Include="Pester\Functions\Coverage.Tests.ps1" />
+    <Compile Include="Pester\Functions\Describe.ps1" />
+    <Compile Include="Pester\Functions\Describe.Tests.ps1" />
+    <Compile Include="Pester\Functions\GlobalMock-A.Tests.ps1" />
+    <Compile Include="Pester\Functions\GlobalMock-B.Tests.ps1" />
+    <Compile Include="Pester\Functions\In.ps1" />
+    <Compile Include="Pester\Functions\In.Tests.ps1" />
+    <Compile Include="Pester\Functions\InModuleScope.ps1" />
+    <Compile Include="Pester\Functions\InModuleScope.Tests.ps1" />
+    <Compile Include="Pester\Functions\It.ps1" />
+    <Compile Include="Pester\Functions\It.Tests.ps1" />
+    <Compile Include="Pester\Functions\Mock.ps1" />
+    <Compile Include="Pester\Functions\Mock.Tests.ps1" />
+    <Compile Include="Pester\Functions\New-Fixture.ps1" />
+    <Compile Include="Pester\Functions\New-Fixture.Tests.ps1" />
+    <Compile Include="Pester\Functions\PesterState.ps1" />
+    <Compile Include="Pester\Functions\PesterState.Tests.ps1" />
+    <Compile Include="Pester\Functions\SetupTeardown.ps1" />
+    <Compile Include="Pester\Functions\SetupTeardown.Tests.ps1" />
+    <Compile Include="Pester\Functions\TestDrive.ps1" />
+    <Compile Include="Pester\Functions\TestDrive.Tests.ps1" />
+    <Compile Include="Pester\Functions\TestResults.ps1" />
+    <Compile Include="Pester\Functions\TestResults.Tests.ps1" />
+    <Compile Include="Pester\Functions\TestsRunningInCleanRunspace.Tests.ps1" />
+    <Compile Include="Pester\Pester.psm1" />
+    <Compile Include="task.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Pester\" />
+    <Folder Include="Pester\Functions\" />
+    <Folder Include="Pester\Functions\Assertions\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Target Name="Build" />
+</Project>

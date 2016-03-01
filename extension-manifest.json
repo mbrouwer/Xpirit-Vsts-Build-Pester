@@ -1,0 +1,75 @@
+{
+  "manifestVersion": 1,
+  "id": "PeterGroenewegen-Xpirit-Vsts-Build-Pester-Test",
+  "name": "Pester unittest build task",
+  "version": "1.0.0",
+  "publisher": "petergroenewegen",
+  "public": false,
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "description": "Build extension that enable you to run Pester unittests.",
+  "categories": [
+    "Build and release"
+  ],
+  "tags": [
+    "Pester",
+    "build",
+    "unittest",
+    "powershell"
+  ],
+  "screenshots": [
+    {
+      "path": "Xpirit.Vsts.Build.Pester.Extension/images/screenshots/vsts-Pester-tasks.png"
+    },
+    {
+      "path": "Xpirit.Vsts.Build.Pester.Extension/images/screenshots/vsts-Pester1-Pester.png"
+    },
+    {
+      "path": "Xpirit.Vsts.Build.Pester.Extension/images/screenshots/vsts-Pester2-Pester.png"
+    }
+  ],
+  "content": {
+    "details": {
+      "path": "Xpirit.Vsts.Build.Pester.Extension/readme.md"
+    },
+    "license": {
+      "path": "Xpirit.Vsts.Build.Pester.Extension/license.txt"
+    }
+  },
+  "links": {
+    "getstarted": {
+      "uri": "https://github.com/XpiritBV/Xpirit.Vsts.Build.Pester/wiki"
+    },
+    "support": {
+      "uri": "https://github.com/XpiritBV/Xpirit.Vsts.Build.Pester/wiki"
+    }
+  },
+  "branding": {
+    "color": "rgb(36, 43, 50)",
+    "theme": "dark"
+  },
+  "icons": {
+    "default": "Xpirit.Vsts.Build.Pester.Extension/images/Pester.png"
+  },
+  "files": [
+    {
+      "path": "Xpirit-Vsts-Build-Pester"
+    }
+  ],
+
+  "contributions": [
+    {
+      "id": "Xpirit-Vsts-Build-Pester",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "Xpirit-Vsts-Build-Pester"
+      }
+    }
+  ]
+}
