@@ -1,6 +1,6 @@
 {
   "id": "31f040e5-e040-4336-878a-59a493334434",
-  "name": "Unzip",
+  "name": "Pester",
   "friendlyName": "Run Pester powershell unittests",
   "description": "Run Pester powershell unittests",
   "helpMarkDown": "",
@@ -10,7 +10,7 @@
   "version": {
     "Major": 1,
     "Minor": 0,
-    "Patch": 8
+    "Patch": 38
   },
   "demands": [ ],
   "minimumAgentVersion": "1.90.0",
