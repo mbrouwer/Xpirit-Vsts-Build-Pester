@@ -10,7 +10,7 @@
   "version": {
     "Major": 1,
     "Minor": 0,
-    "Patch": 38
+    "Patch": 40
   },
   "demands": [ ],
   "minimumAgentVersion": "1.90.0",
@@ -23,6 +23,14 @@
       "defaultValue": "./*",
       "required": true,
       "helpMarkDown": "./* will get all your tests."
+    },
+    {
+      "name": "FailOnError",
+      "type": "boolean",
+      "label": "Fail build on error",
+      "defaultValue": "true",
+      "required": true,
+      "helpMarkDown": "Check to break build on error"
     }
   ],
   "instanceNameFormat": "Pester",
