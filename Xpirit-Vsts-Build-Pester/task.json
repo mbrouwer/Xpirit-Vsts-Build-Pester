@@ -38,7 +38,7 @@
     "PowerShell": {
       "target": "$(currentDirectory)\\Pester.ps1",
       "argumentFormat": "",
-      "workingDirectory": "$(Build.SourcesDirectory)"
+      "workingDirectory": "$(currentDirectory)"
     }
   }
 }
