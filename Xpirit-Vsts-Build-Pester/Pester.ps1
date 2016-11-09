@@ -2,40 +2,24 @@
     [string] $ItemSpec = "*.tests.ps1",
 	[string] $FailOnError = "false"
 )
-function Get-ModuleVersion($modulename){
-    return (Get-Module -Name $modulename).Version
-}
 
 $TestFiles=$(get-childitem -path $env:BUILD_SOURCESDIRECTORY -recurse $ItemSpec).fullname
 
 Write-Output "Test files found:"
 Write-Output $TestFiles
 
-$pesterversion = Get-ModuleVersion ("Pester")
+$pesterversion = $(Get-Package pester).Version
 if ($pesterversion) {
     #pester is installed on the system
 	Write-Output "Pester is installed $pesterversion"
 } else {
-	Write-Output "Intalling latest version of pester"
+	Write-Output "Installing latest version of pester"
     
     #install pester
-    $tempFile = Join-Path $env:temp "pester.zip"
-	$modulePath = Join-Path $env:temp "pester-master\Pester.psm1" 
+    Install-Package pester -Force
 
-	Invoke-WebRequest https://github.com/pester/Pester/archive/master.zip -OutFile $tempFile
- 
-	$unzipdir = Join-Path $env:temp "pester-master"
-	if (Test-Path $unzipdir){
-	    Remove-Item "$unzipdir" -recurse
-	}
-
-	Add-Type -Assembly System.IO.Compression.FileSystem
-	[System.IO.Compression.ZipFile]::ExtractToDirectory($tempFile, $env:temp)
-
-	Import-Module $modulePath -DisableNameChecking -Verbose
-
-    $pesterversion = Get-ModuleVersion ("Pester")
-	Write-Output "Pester installed $pesterversion"
+    $pesterversion = $(Get-Package pester).Version
+	Write-Output "Pester installed: $pesterversion"
 }
 
 [string] $filepart1 = "TEST-pester"
