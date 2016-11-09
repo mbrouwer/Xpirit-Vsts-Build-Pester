@@ -54,7 +54,7 @@ Write-Output "Writing pester output to $outputfile"
 
 $result = Invoke-Pester $ItemSpec -PassThru -Outputformat nunitxml -Outputfile $outputFile
 
-if (Convert-String $FailOnError Boolean){
+if ([boolean]::Parse($FailOnError)){
 	if ($result.failedCount -ne 0)
 	{ 
 		Write-Error "Error Pester: 1 or more tests failed"
