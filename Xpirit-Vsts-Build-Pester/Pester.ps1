@@ -1,12 +1,15 @@
     Param(
-    [string] $ItemSpec = "**/*.tests.ps1",
+    [string] $ItemSpec = "*.tests.ps1",
 	[string] $FailOnError = "false"
 )
 function Get-ModuleVersion($modulename){
     return (Get-Module -Name $modulename).Version
 }
 
-Write-Output "ItemSpec: $ItemSpec" 
+$TestFiles=$(get-childitem -path $env:BUILD_SOURCESDIRECTORY -recurse $ItemSpec).fullname
+
+Write-Output "Test files found:"
+Write-Output $TestFiles
 
 $pesterversion = Get-ModuleVersion ("Pester")
 if ($pesterversion) {
@@ -52,7 +55,7 @@ if (Test-Path $outputFile){
 
 Write-Output "Writing pester output to $outputfile"
 
-$result = Invoke-Pester $ItemSpec -PassThru -Outputformat nunitxml -Outputfile $outputFile
+$result = Invoke-Pester $TestFiles -PassThru -Outputformat nunitxml -Outputfile $outputFile
 
 if ([boolean]::Parse($FailOnError)){
 	if ($result.failedCount -ne 0)
@@ -60,4 +63,3 @@ if ([boolean]::Parse($FailOnError)){
 		Write-Error "Error Pester: 1 or more tests failed"
 	}
 }
-
