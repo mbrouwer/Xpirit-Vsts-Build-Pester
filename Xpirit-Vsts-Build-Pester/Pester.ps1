@@ -1,6 +1,6 @@
     Param(
     [string] $ItemSpec = "*.tests.ps1",
-	[string] $FailOnError = "false"
+    [string] $FailOnError = "false"
 )
 
 $TestFiles=$(get-childitem -path $env:BUILD_SOURCESDIRECTORY -recurse $ItemSpec).fullname
@@ -11,15 +11,15 @@ Write-Output $TestFiles
 $pesterversion = $(Get-Package pester).Version
 if ($pesterversion) {
     #pester is installed on the system
-	Write-Output "Pester is installed $pesterversion"
+    Write-Output "Pester is installed $pesterversion"
 } else {
-	Write-Output "Installing latest version of pester"
-    
+    Write-Output "Installing latest version of pester"
+
     #install pester
     Install-Package pester -Force
 
     $pesterversion = $(Get-Package pester).Version
-	Write-Output "Pester installed: $pesterversion"
+    Write-Output "Pester installed: $pesterversion"
 }
 
 Do {
@@ -28,7 +28,7 @@ Do {
     [string] $fp3 = ".xml"
     [string] $RandomFileName = -Join ($fp1, $fp2, $fp3)
     $outputFile = Join-Path $env:COMMON_TESTRESULTSDIRECTORY $RandomFileName
-} 
+}
 Until(!(Test-Path $outputFile))
 #Here there is time for a race condition, but should be very rare
 New-Item $outputFile -Type File
@@ -38,8 +38,9 @@ Write-Output "Writing pester output to $outputfile"
 $result = Invoke-Pester $TestFiles -PassThru -Outputformat nunitxml -Outputfile $outputFile
 
 if ([boolean]::Parse($FailOnError)){
-	if ($result.failedCount -ne 0)
-	{ 
-		Write-Error "Error Pester: 1 or more tests failed"
-	}
+    if ($result.failedCount -ne 0)
+    {
+        Write-Error "Error Pester: 1 or more tests failed"
+    }
 }
+
