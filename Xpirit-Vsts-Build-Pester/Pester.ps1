@@ -22,20 +22,16 @@ if ($pesterversion) {
 	Write-Output "Pester installed: $pesterversion"
 }
 
-[string] $filepart1 = "TEST-pester"
-[string] $filepart2 = ".xml"
-[string] $filename = -Join ($filepart1, $filepart2)
-
-$outputFile = Join-Path $env:COMMON_TESTRESULTSDIRECTORY $filename
-
-if (Test-Path $outputFile){
-    [int]$counter = 1
-	while (Test-Path $outputFile){
-        $filename = -Join ($filepart1,  (-Join ($counter, $filepart2)))
-		$outputFile = Join-Path $env:COMMON_TESTRESULTSDIRECTORY $filename
-        $counter = $counter+1
-	}
-}
+Do {
+    [string] $fp1 = "TEST-"
+    [string] $fp2 = [guid]::NewGuid()
+    [string] $fp3 = ".xml"
+    [string] $RandomFileName = -Join ($fp1, $fp2, $fp3)
+    $outputFile = Join-Path $env:COMMON_TESTRESULTSDIRECTORY $RandomFileName
+} 
+Until(!(Test-Path $outputFile))
+#Here there is time for a race condition, but should be very rare
+New-Item $outputFile -Type File
 
 Write-Output "Writing pester output to $outputfile"
 
