@@ -20,9 +20,9 @@
       "name": "ItemSpec",
       "type": "string",
       "label": "Test files",
-      "defaultValue": "./*",
+      "defaultValue": "*.tests.ps1",
       "required": true,
-      "helpMarkDown": "./* will get all your tests."
+      "helpMarkDown": "*.tests.ps1 will get all your tests."
     },
     {
       "name": "FailOnError",
