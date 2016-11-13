@@ -8,7 +8,7 @@ $TestFiles=$(get-childitem -path $env:BUILD_SOURCESDIRECTORY -recurse $ItemSpec)
 Write-Output "Test files found:"
 Write-Output $TestFiles
 
-$pesterversion = $(Get-Package pester).Version
+$pesterversion = $(Get-Module pester).Version
 if ($pesterversion) {
     #pester is installed on the system
     Write-Output "Pester is installed $pesterversion"
