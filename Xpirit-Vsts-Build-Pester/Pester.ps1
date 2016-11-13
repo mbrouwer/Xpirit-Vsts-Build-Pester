@@ -16,7 +16,7 @@ if ($pesterversion) {
     Write-Output "Installing latest version of pester"
 
     #install pester
-    Install-Package pester -Force
+    Install-Package pester -Force -Scope CurrentUser
 
     $pesterversion = $(Get-Package pester).Version
     Write-Output "Pester installed: $pesterversion"
