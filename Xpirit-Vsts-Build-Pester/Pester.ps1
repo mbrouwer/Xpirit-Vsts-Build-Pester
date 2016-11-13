@@ -18,7 +18,7 @@ if ($pesterversion) {
     #install pester
     Install-Package pester -Force -Scope CurrentUser
 
-    $pesterversion = $(Get-Package pester).Version
+    $pesterversion = $(Get-Module pester).Version
     Write-Output "Pester installed: $pesterversion"
 }
 
