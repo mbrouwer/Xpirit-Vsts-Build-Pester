@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "PeterGroenewegen-Xpirit-Vsts-Build-Pester",
   "name": "Pester unittest build task",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "publisher": "petergroenewegen",
   "public": true,
   "targets": [
@@ -18,7 +18,11 @@
     "Pester",
     "build",
     "unittest",
-    "powershell"
+    "powershell",
+    "Package",
+    "Publish",
+    "Release",
+    "Test" 
   ],
   "screenshots": [
     {
