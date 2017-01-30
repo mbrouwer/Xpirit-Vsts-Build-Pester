@@ -1,4 +1,4 @@
-# Run Pester in VSTS build and release tasks
+# Run Pester in VSTS build tasks
 This build extension enables your to run Powershell unit test in your build and release pipelines. It uses the Pester Powershell test framework.
 
 ## Pester
@@ -17,7 +17,7 @@ Test files: **/*.tests.ps1
 Fail build on error: true
 ```
 
-![alt tag](images/screenshots/vsts-pester1-pester.png)
+![Run tests](https://raw.githubusercontent.com/XpiritBV/Xpirit-Vsts-Build-Pester/master/Xpirit.Vsts.Build.Pester.Extension/images/screenshots/vsts-pester1-pester.png)
 
 This will run all *.tests.ps1 files in your repository
 
@@ -32,7 +32,7 @@ Test Results Files: ../**/TEST-*.xml
 Always run: true
 ```
 
-![alt tag](images/screenshots/vsts-pester2-pester.png)
+![Upload test results VSTS](https://raw.githubusercontent.com/XpiritBV/Xpirit-Vsts-Build-Pester/master/Xpirit.Vsts.Build.Pester.Extension/images/screenshots/vsts-pester2-pester.png)
 
 
 

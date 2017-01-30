@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "PeterGroenewegen-Xpirit-Vsts-Build-Pester",
   "name": "Pester unittest build task",
-  "version": "1.1.3",
+  "version": "1.1.6",
   "publisher": "petergroenewegen",
   "public": true,
   "targets": [
@@ -45,10 +45,10 @@
   },
   "links": {
     "getstarted": {
-      "uri": "https://github.com/XpiritBV/Xpirit.Vsts.Build.Pester/wiki"
+      "uri": "https://pgroene.wordpress.com/2017/01/30/running-powershell-pester-unit-test-in-a-vsts-build-pipeline/"
     },
     "support": {
-      "uri": "https://github.com/XpiritBV/Xpirit.Vsts.Build.Pester/wiki"
+      "uri": "https://pgroene.wordpress.com/2017/01/30/running-powershell-pester-unit-test-in-a-vsts-build-pipeline/"
     }
   },
   "branding": {
