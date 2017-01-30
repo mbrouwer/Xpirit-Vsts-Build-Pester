@@ -3,14 +3,14 @@
   "name": "Pester Powershell unittest",
   "friendlyName": "Run Pester powershell unittests",
   "description": "Run Pester powershell unittests",
-  "helpMarkDown": "",
+  "helpMarkDown": "[More Information](https://pgroene.wordpress.com/2017/01/30/running-powershell-pester-unit-test-in-a-vsts-build-pipeline/)",
   "category": "Test",
   "visibility": [ "Build" ],
   "author": "Peter Groenewegen - Xpirit",
   "version": {
     "Major": 1,
     "Minor": 1,
-    "Patch": 2
+    "Patch": 3
   },
   "demands": [ ],
   "minimumAgentVersion": "1.90.0",
@@ -20,9 +20,9 @@
       "name": "ItemSpec",
       "type": "string",
       "label": "Test files",
-      "defaultValue": "*.tests.ps1",
+      "defaultValue": "**\\*.tests.ps1",
       "required": true,
-      "helpMarkDown": "*.tests.ps1 will get all your tests."
+      "helpMarkDown": "**\\*.tests.ps1 will get all your tests."
     },
     {
       "name": "FailOnError",
