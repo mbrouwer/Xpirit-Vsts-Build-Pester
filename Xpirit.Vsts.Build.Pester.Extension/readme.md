@@ -17,7 +17,7 @@ Test files: **/*.tests.ps1
 Fail build on error: true
 ```
 
-![alt tag](Images/screenshots/vsts-pester1-pester.png)
+![alt tag](images/screenshots/vsts-pester1-pester.png)
 
 This will run all *.tests.ps1 files in your repository
 
@@ -32,4 +32,4 @@ Test Results Files: ../**/TEST-*.xml
 Always run: true
 ```
 
-![alt tag](Images/screenshots/vsts-pester2-pester.png)
+![alt tag](images/screenshots/vsts-pester2-pester.png)
