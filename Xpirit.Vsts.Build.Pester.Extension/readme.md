@@ -11,16 +11,25 @@ On failure you can choose to break the build or just show it in the test results
 
 ### Run tests
 For running the tests you can configure the task like:
+
+```
 Test files: **/*.tests.ps1
 Fail build on error: true
+```
+
 ![alt tag](Images/screenshots/vsts-pester1-pester.png)
+
 This will run all *.tests.ps1 files in your repository
 
 ### Upload test results VSTS
 When you want the test results visible in VSTS, you need to upload the test result file. This can be done with the Upload test results task. Pester will write the test results in nUnit format to a test results file. This test results file is located in the test results directory.
 
 The following configuration can be used:
+
+```
 Test Result Format: nUnit
 Test Results Files: ../**/TEST-*.xml
 Always run: true
+```
+
 ![alt tag](Images/screenshots/vsts-pester2-pester.png)
