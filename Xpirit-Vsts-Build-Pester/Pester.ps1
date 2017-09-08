@@ -20,7 +20,7 @@ if ($packages.Name  -contains "pester") {
 $pesterversion = $(Get-Package pester).Version
 Write-Output "Pester installed: $pesterversion"
 
-Do {
+Do { 
     [string] $fp1 = "TEST-"
     [string] $fp2 = [guid]::NewGuid()
     [string] $fp3 = ".xml"
