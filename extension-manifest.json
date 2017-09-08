@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "PeterGroenewegen-Xpirit-Vsts-Build-Pester",
   "name": "Pester unittest build task",
-  "version": "1.1.6",
+  "version": "2.2.3",
   "publisher": "petergroenewegen",
   "public": true,
   "targets": [
@@ -10,7 +10,7 @@
       "id": "Microsoft.VisualStudio.Services"
     }
   ],
-  "description": "Build extension that enable you to run Pester unittests.",
+  "description": "Build extension that enable you to run Pester. You can run normal Pester unittest or use Pester to test your deployed Azure resources.",
   "categories": [
     "Build and release"
   ],
@@ -22,7 +22,9 @@
     "Package",
     "Publish",
     "Release",
-    "Test" 
+    "Test",
+    "Azure",
+    "deploymenttest"
   ],
   "screenshots": [
     {
@@ -61,9 +63,11 @@
   "files": [
     {
       "path": "Xpirit-Vsts-Build-Pester"
+    },
+    {
+      "path": "Xpirit-Vsts-Build-PesterAzure"
     }
   ],
-
   "contributions": [
     {
       "id": "Xpirit-Vsts-Build-Pester",
@@ -73,6 +77,16 @@
       ],
       "properties": {
         "name": "Xpirit-Vsts-Build-Pester"
+      }
+    },
+    {
+      "id": "Xpirit-Vsts-Build-PesterAzure",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "Xpirit-Vsts-Build-PesterAzure"
       }
     }
   ]

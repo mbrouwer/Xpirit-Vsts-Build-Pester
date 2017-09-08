@@ -13,13 +13,36 @@ On failure you can choose to break the build or just show it in the test results
 For running the tests you can configure the task like:
 
 ```
-Test files: **/*.tests.ps1
+Test files: *.tests.ps1
 Fail build on error: true
 ```
 
 ![Run tests](https://raw.githubusercontent.com/XpiritBV/Xpirit-Vsts-Build-Pester/master/Xpirit.Vsts.Build.Pester.Extension/images/screenshots/vsts-pester1-pester.png)
 
 This will run all *.tests.ps1 files in your repository
+
+[Read more...](https://pgroene.wordpress.com/2017/01/30/running-powershell-pester-unit-test-in-a-vsts-build-pipeline/)
+
+### Run deployment tests
+The task 'Pester powershell deployment tests on Azure' has a connection to azure that enables you to run tests against azure:
+
+```
+Describe "Check deployment" {
+    It "has deployed TestVM" {
+        Get-AzurermVM | Where-Object { $_.Name -eq "TestVM" }  | Should Not Be $null
+    }
+    It "has removed TestVM2" {
+        Get-AzurermVM | Where-Object { $_.Name -eq "TestVM2" }  | Should Be $null
+    }
+    It "TestVM is Size A1" {
+        Get-AzurermVM | Where-Object { $_.Name -eq "TestVM" } | Where-Object { $_.HardwareProfile.VmSize -eq "Standard_A1" } | Should Not Be $null
+    }
+}
+```
+
+This way you can automaticly validate your deployments in your Release Pipelines.
+
+[Read more...](https://pgroene.wordpress.com/2017/09/08/test-azure-deployments-in-your-vsts-release-pipeline/)
 
 ### Upload test results VSTS
 When you want the test results visible in VSTS, you need to upload the test result file. This can be done with the Upload test results task. Pester will write the test results in nUnit format to a test results file. This test results file is located in the test results directory. That is one directory higher than the working directory of the task.
