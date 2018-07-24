@@ -1,9 +1,12 @@
     Param(
     [string] $ItemSpec = "*.tests.ps1",
+	[string] $IncludeTags,
+	[string] $ExcludeTags,
     [string] $FailOnError = "false"
 )
 
-$WorkingDirectory = $env:BUILD_SOURCESDIRECTORY
+$WorkingDirectory = "C:\Users\kevbo\source\repos\pestertest"
+#$WorkingDirectory = $env:BUILD_SOURCESDIRECTORY
 if (!$WorkingDirectory){
     $WorkingDirectory = $env:SYSTEM_DEFAULTWORKINGDIRECTORY
 }
@@ -48,8 +51,26 @@ Write-Output "Test files found:"
 Write-Output $TestFiles
 Write-Output "Writing pester output: $outputfile"
 
-Write-Output "Invoke-Pester $TestFiles -PassThru -Outputformat nunitxml -Outputfile $outputFile"
-$result = Invoke-Pester $TestFiles -PassThru -Outputformat nunitxml -Outputfile $outputFile    
+$Parameters = @{
+    Path = $TestFiles
+	Outputfile = $outputFile
+	Outputformat = "nunitxml"
+}
+
+if ($IncludeTags) {
+    $IncludeTags = $IncludeTags.Split(',').Replace('"', '').Replace("'", "")
+    $Parameters.Add('Tag', $IncludeTags)
+    Write-Output "Tags included: $IncludeTags"
+}
+
+if ($ExcludeTags) {
+    $ExcludeTags = $ExcludeTags.Split(',').Replace('"', '').Replace("'", "")
+    $Parameters.Add('ExcludeTag', $ExcludeTags)
+    Write-Output "Tags excluded: $ExcludeTags"
+}
+
+Write-Output "Invoke-Pester @Parameters -PassThru"
+$result = Invoke-Pester @Parameters -PassThru
 
 if ([boolean]::Parse($FailOnError)){
     if ($result.failedCount -ne 0)
