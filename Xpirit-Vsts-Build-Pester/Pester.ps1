@@ -1,7 +1,8 @@
     Param(
     [string] $ItemSpec = "*.tests.ps1",
-	[string] $IncludeTags,
-	[string] $ExcludeTags,
+	[String] $TestParameters,
+	[string[]] $IncludeTags,
+	[string[]] $ExcludeTags,
     [string] $FailOnError = "false"
 )
 
@@ -51,26 +52,45 @@ Write-Output "Test files found:"
 Write-Output $TestFiles
 Write-Output "Writing pester output: $outputfile"
 
-$Parameters = @{
-    Path = $TestFiles
+$InvokeParameters = @{
+    PassThru = $True
+	Script = $TestFiles
 	Outputfile = $outputFile
 	Outputformat = "nunitxml"
 }
 
+
+$InvokeParameters.Add('Parameters', @{SqlAzureRegion = 'northeurope';DbAzureRegion = 'North Europe'})
+
 if ($IncludeTags) {
     $IncludeTags = $IncludeTags.Split(',').Replace('"', '').Replace("'", "")
-    $Parameters.Add('Tag', $IncludeTags)
+    $InvokeParameters.Add('Tag', $IncludeTags)
     Write-Output "Tags included: $IncludeTags"
 }
 
 if ($ExcludeTags) {
     $ExcludeTags = $ExcludeTags.Split(',').Replace('"', '').Replace("'", "")
-    $Parameters.Add('ExcludeTag', $ExcludeTags)
+    $InvokeParameters.Add('ExcludeTag', $ExcludeTags)
     Write-Output "Tags excluded: $ExcludeTags"
 }
 
+
+###Hack
+$ParameterHash = @{ SqlAzureRegion = 'westeurope';DbAzureRegion = 'North Europe' }
+$ScriptHash = @{ 'Path' = $ItemSpec; 'Parameters' = $ParameterHash }
+$InvokePesterHash = @{
+	script = $ScriptHash
+	PassThru = $True
+	Outputfile = $outputFile
+	Outputformat = "nunitxml"
+}
+$result = Invoke-Pester @InvokePesterHash
+####
+
+
+
 Write-Output "Invoke-Pester @Parameters -PassThru"
-$result = Invoke-Pester @Parameters -PassThru
+#$result = Invoke-Pester @InvokeParameters
 
 if ([boolean]::Parse($FailOnError)){
     if ($result.failedCount -ne 0)
