@@ -9,8 +9,8 @@
   "author": "Peter Groenewegen - Xpirit",
   "version": {
     "Major": 2,
-    "Minor": 2,
-    "Patch": 1
+    "Minor": 3,
+    "Patch": 0
   },
   "demands": [ ],
   "minimumAgentVersion": "1.90.0",
@@ -30,7 +30,7 @@
       "label": "Testing Parameters",
       "defaultValue": "",
       "required": false,
-      "helpMarkDown": "Pass a hashtable of paramters required by Pester scripts"
+      "helpMarkDown": "Pass a comma separated list of paramters required by Pester scripts.  Example: SqlAzureRegion = 'westeurope',DbAzureRegion = 'West Europe'  "
     },
     {
       "name": "IncludeTags",

@@ -1,13 +1,13 @@
     Param(
     [string] $ItemSpec = "*.tests.ps1",
-	[String] $TestParameters,
-	[string[]] $IncludeTags,
-	[string[]] $ExcludeTags,
-    [string] $FailOnError = "false"
+	[String] $TestParameters = "",
+	[string[]] $IncludeTags = "",
+	[string[]] $ExcludeTags = "",
+    [string] $FailOnError = "true"
 )
 
-$WorkingDirectory = "C:\Users\kevbo\source\repos\pestertest"
-#$WorkingDirectory = $env:BUILD_SOURCESDIRECTORY
+#$WorkingDirectory = "C:\Users\kevbo\source\repos\pestertest"
+$WorkingDirectory = $env:BUILD_SOURCESDIRECTORY
 if (!$WorkingDirectory){
     $WorkingDirectory = $env:SYSTEM_DEFAULTWORKINGDIRECTORY
 }
@@ -52,31 +52,19 @@ Write-Output "Test files found:"
 Write-Output $TestFiles
 Write-Output "Writing pester output: $outputfile"
 
-$InvokeParameters = @{
-    PassThru = $True
-	Script = $TestFiles
-	Outputfile = $outputFile
-	Outputformat = "nunitxml"
+
+$ParameterHash = @{}
+if ($TestParameters) {
+	# Parameters need passing to the Pester tests
+	$ValuePairs = $TestParameters.Split(',')
+	ForEach ($ValuePair in $ValuePairs) {
+		Write-Output $ValuePair
+		$Values = $ValuePair.Split('=').Replace('"', '').Replace("'", "").Trim()
+		$ParameterHash.Add($Values[0],$Values[1])
+	}
+	Write-Output $ParameterHash
 }
 
-
-$InvokeParameters.Add('Parameters', @{SqlAzureRegion = 'northeurope';DbAzureRegion = 'North Europe'})
-
-if ($IncludeTags) {
-    $IncludeTags = $IncludeTags.Split(',').Replace('"', '').Replace("'", "")
-    $InvokeParameters.Add('Tag', $IncludeTags)
-    Write-Output "Tags included: $IncludeTags"
-}
-
-if ($ExcludeTags) {
-    $ExcludeTags = $ExcludeTags.Split(',').Replace('"', '').Replace("'", "")
-    $InvokeParameters.Add('ExcludeTag', $ExcludeTags)
-    Write-Output "Tags excluded: $ExcludeTags"
-}
-
-
-###Hack
-$ParameterHash = @{ SqlAzureRegion = 'westeurope';DbAzureRegion = 'North Europe' }
 $ScriptHash = @{ 'Path' = $ItemSpec; 'Parameters' = $ParameterHash }
 $InvokePesterHash = @{
 	script = $ScriptHash
@@ -84,13 +72,23 @@ $InvokePesterHash = @{
 	Outputfile = $outputFile
 	Outputformat = "nunitxml"
 }
+
+if ($IncludeTags) {
+	# Apply tag filter to the pester tests that are required to run
+    $IncludeTags = $IncludeTags.Split(',').Replace('"', '').Replace("'", "")
+    $InvokePesterHash.Add('Tag', $IncludeTags)
+    Write-Output "Tags included: $IncludeTags"
+}
+
+if ($ExcludeTags) {
+	# Apply tag filter to the pester tests that should not be run.  Overrides include Tags
+    $ExcludeTags = $ExcludeTags.Split(',').Replace('"', '').Replace("'", "")
+    $InvokePesterHash.Add('ExcludeTag', $ExcludeTags)
+    Write-Output "Tags excluded: $ExcludeTags"
+}
+
+Write-Output "Invoke-Pester $InvokePesterHash"
 $result = Invoke-Pester @InvokePesterHash
-####
-
-
-
-Write-Output "Invoke-Pester @Parameters -PassThru"
-#$result = Invoke-Pester @InvokeParameters
 
 if ([boolean]::Parse($FailOnError)){
     if ($result.failedCount -ne 0)
