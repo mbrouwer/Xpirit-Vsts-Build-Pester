@@ -15,6 +15,9 @@ For running the tests you can configure the task like:
 ```
 Test files: *.tests.ps1
 Fail build on error: true
+Include Tags: ARM,SQL
+Exclude Tags: Database
+Testing Parameters: "SqlAzureRegion = 'westeurope',DbAzureRegion = 'West Europe'"
 ```
 
 ![Run tests](https://raw.githubusercontent.com/XpiritBV/Xpirit-Vsts-Build-Pester/master/Xpirit.Vsts.Build.Pester.Extension/images/screenshots/vsts-pester1-pester.png)
@@ -27,15 +30,34 @@ This will run all *.tests.ps1 files in your repository
 The task 'Pester powershell deployment tests on Azure' has a connection to azure that enables you to run tests against azure:
 
 ```
-Describe "Check deployment" {
-    It "has deployed TestVM" {
-        Get-AzurermVM | Where-Object { $_.Name -eq "TestVM" }  | Should Not Be $null
+param(
+  [string]$DbAzureRegion,
+  [string]$ResourceGroupName,
+  [string]$SqlServerName,
+  [string]$SqlDatabase
+  )
+
+Describe -Name 'Demo SQL Database' -Tags ('ARM','Database') -Fixture {
+    Context -Name 'Resource Group' {
+        It -name 'Passed Resource Group existence check' -test {
+            Get-AzureRmResourceGroup -Name $ResourceGroupName | Should Not Be $null
+        }
     }
-    It "has removed TestVM2" {
-        Get-AzurermVM | Where-Object { $_.Name -eq "TestVM2" }  | Should Be $null
-    }
-    It "TestVM is Size A1" {
-        Get-AzurermVM | Where-Object { $_.Name -eq "TestVM" } | Where-Object { $_.HardwareProfile.VmSize -eq "Standard_A1" } | Should Not Be $null
+    
+    Context -Name 'Database' {
+        $database = Get-AzureRmSqlDatabase -ServerName $SqlServerName -ResourceGroupName $ResourceGroupName -DatabaseName $SqlDatabase
+        It -name 'Passed SQL Database existence check' -test {
+            $database | Should Not be $null
+        }
+        It -name 'Passed SQL Database collation check' -test {
+            $database.CollationName | Should be 'SQL_Latin1_General_CP1_CI_AS'
+        }
+        It -name 'Passed SQL Database status check' -test {
+            $database.Status | Should be 'Online'
+        }
+        It -name 'Passed SQL Database Location check' -test {
+            $database.Location | Should Be $DbAzureRegion
+        }
     }
 }
 ```

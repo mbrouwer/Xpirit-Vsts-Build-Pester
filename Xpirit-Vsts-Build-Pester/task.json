@@ -9,8 +9,8 @@
   "author": "Peter Groenewegen - Xpirit",
   "version": {
     "Major": 2,
-    "Minor": 2,
-    "Patch": 1
+    "Minor": 3,
+    "Patch": 0
   },
   "demands": [ ],
   "minimumAgentVersion": "1.90.0",
@@ -23,6 +23,30 @@
       "defaultValue": "*.tests.ps1",
       "required": true,
       "helpMarkDown": "*.tests.ps1 will get all your tests."
+    },
+    {
+      "name": "TestParams",
+      "type": "string",
+      "label": "Testing Parameters",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "Pass a comma separated list of paramters required by Pester scripts.  Example: SqlAzureRegion = 'westeurope',DbAzureRegion = 'West Europe'  "
+    },
+    {
+      "name": "IncludeTags",
+      "type": "string",
+      "label": "Include Tags",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "Supply tags in comma separated list.  Avoid spaces in tag"
+    },
+    {
+      "name": "ExcludeTags",
+      "type": "string",
+      "label": "Exclude Tags",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "Supply tags in comma separated list.  Avoid spaces in tag"
     },
     {
       "name": "FailOnError",
