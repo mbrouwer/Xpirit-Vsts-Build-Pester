@@ -65,7 +65,7 @@ if ($TestParameters) {
 	Write-Output $ParameterHash
 }
 
-$ScriptHash = @{ 'Path' = $ItemSpec; 'Parameters' = $ParameterHash }
+$ScriptHash = @{ 'Path' = $TestFiles; 'Parameters' = $ParameterHash }
 $InvokePesterHash = @{
 	script = $ScriptHash
 	PassThru = $True
