@@ -14,8 +14,6 @@ if (!$WorkingDirectory){
 
 Write-Output "WorkingDirectory: $WorkingDirectory"
 
-$TestFiles=$(get-childitem -path $WorkingDirectory -recurse $ItemSpec).fullname
-
 $packages = get-package
 if ($packages.Name  -contains "pester") {
     #pester is installed on the system
@@ -48,9 +46,8 @@ New-Item $outputFile -Type File
 
 $pesterversion = $(Get-Package pester).Version
 Write-Output "Pester installed: $pesterversion"
-Write-Output "Test files found:"
-Write-Output $TestFiles
 Write-Output "Writing pester output: $outputfile"
+Write-Output "Files: $ItemSpec"
 
 
 $ParameterHash = @{}
@@ -65,7 +62,7 @@ if ($TestParameters) {
 	Write-Output $ParameterHash
 }
 
-$ScriptHash = @{ 'Path' = $TestFiles; 'Parameters' = $ParameterHash }
+$ScriptHash = @{ 'Path' = $ItemSpec; 'Parameters' = $ParameterHash }
 $InvokePesterHash = @{
 	script = $ScriptHash
 	PassThru = $True
