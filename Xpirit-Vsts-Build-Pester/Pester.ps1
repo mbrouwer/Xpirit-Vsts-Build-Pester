@@ -13,6 +13,7 @@ if (!$WorkingDirectory){
 }
 
 Write-Output "WorkingDirectory: $WorkingDirectory"
+Set-Location $WorkingDirectory
 
 $packages = get-package
 if ($packages.Name  -contains "pester") {
