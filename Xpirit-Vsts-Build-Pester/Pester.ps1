@@ -16,18 +16,13 @@ if (!$WorkingDirectory){
 Write-Output "WorkingDirectory: $WorkingDirectory"
 Set-Location $WorkingDirectory
 
-if($PesterVersion -eq "latest") {
-    "Find Pester latest version"
-    $Pester = Find-Module -Name Pester
+$packages = get-package
+if ($packages.Name  -contains "pester") {
+    #pester is installed on the system
+} else {
+    Write-Output "Installing latest version of pester"
 
-    "Latest version is '{0}'" -f $Pester.Version
-}
-
-$Module = Get-Module -Name "Pester" -ListAvailable | Select-Object -First 1
-"Pester version found is = '{0}'" -f $Module.Version
-
-If($Module.Version -ne $PesterVersion) {
-    "Installing Pester..."
+    #install pester
     $installresult = Install-Package pester -Force -Scope CurrentUser -ErrorAction SilentlyContinue
     if (!$installresult){ #Hack for 'hosted vs2017' agent
         $installresult = Install-Package pester -Force -Scope CurrentUser -SkipPublisherCheck 
