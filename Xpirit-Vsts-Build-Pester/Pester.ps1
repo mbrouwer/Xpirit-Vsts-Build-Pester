@@ -28,10 +28,9 @@ $Module = Get-Module -Name "Pester" -ListAvailable | Select-Object -First 1
 
 If($Module.Version -ne $PesterVersion) {
     "Installing Pester..."
-    $installresult = Install-Module -Name "Pester" -Force -Scope CurrentUser -ErrorAction SilentlyContinue
-
+    $installresult = Install-Package pester -Force -Scope CurrentUser -ErrorAction SilentlyContinue
     if (!$installresult){ #Hack for 'hosted vs2017' agent
-        Install-Module -Name "Pester" -Scope CurrentUser -AllowClobber -Force -SkipPublisherCheck
+        $installresult = Install-Package pester -Force -Scope CurrentUser -SkipPublisherCheck 
     }
 }
 
