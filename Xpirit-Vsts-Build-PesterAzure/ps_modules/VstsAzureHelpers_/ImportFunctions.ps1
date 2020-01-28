@@ -9,16 +9,15 @@
             if (!(Import-FromModulePath -Classic:$false) -and
                 !(Import-FromSdkPath -Classic:$false) -and
                 !(Import-FromModulePath -Classic:$true) -and
-                !(Import-FromSdkPath -Classic:$true))
-            {
+                !(Import-FromSdkPath -Classic:$true)) {
                 throw (Get-VstsLocString -Key AZ_ModuleNotFound)
             }
-        } else {
+        }
+        else {
             if (!(Import-FromModulePath -Classic:$true) -and
                 !(Import-FromSdkPath -Classic:$true) -and
                 !(Import-FromModulePath -Classic:$false) -and
-                !(Import-FromSdkPath -Classic:$false))
-            {
+                !(Import-FromSdkPath -Classic:$false)) {
                 throw (Get-VstsLocString -Key AZ_ModuleNotFound)
             }
         }
@@ -28,7 +27,8 @@
         if ($script:isClassic -and $script:classicVersion -lt $minimumVersion) {
             throw (Get-VstsLocString -Key AZ_RequiresMinVersion0 -ArgumentList $minimumVersion)
         }
-    } finally {
+    }
+    finally {
         Trace-VstsLeavingInvocation $MyInvocation
     }
 }
@@ -43,15 +43,28 @@ function Import-FromModulePath {
         # Determine which module to look for.
         if ($Classic) {
             $name = "Azure"
-        } else {
-            $name = "AzureRM"
+        }
+        else {
+            $name = "Az"
         }
 
         # Attempt to resolve the module.
         Write-Verbose "Attempting to find the module '$name' from the module path."
         $module = Get-Module -Name $name -ListAvailable | Select-Object -First 1
         if (!$module) {
-            return $false
+            if ($Classic) {
+                return $false
+            }
+            else {
+                Write-Verbose "Az module not found, trying AzureRM."
+                $name = "AzureRM"
+                $module = Get-Module -Name $name -ListAvailable | Select-Object -First 1
+                if (!$module) {
+                    return $false
+                }
+            }
+            
+            
         }
 
         # Import the module.
@@ -65,11 +78,12 @@ function Import-FromModulePath {
         if ($script:isClassic) {
             # The Azure module was imported.
             $script:classicVersion = $module.Version
-        } else {
+        }
+        else {
             # The AzureRM module was imported.
 
             # Validate the AzureRM.profile module can be found.
-            $profileModule = Get-Module -Name AzureRM.profile -ListAvailable | Select-Object -First 1
+            $profileModule = Get-Module -Name "$($name).profile" -ListAvailable | Select-Object -First 1
             if (!$profileModule) {
                 throw (Get-VstsLocString -Key AZ_AzureRMProfileModuleNotFound)
             }
@@ -81,7 +95,8 @@ function Import-FromModulePath {
         }
 
         return $true
-    } finally {
+    }
+    finally {
         Trace-VstsLeavingInvocation $MyInvocation
     }
 }
@@ -93,9 +108,10 @@ function Import-FromSdkPath {
     Trace-VstsEnteringInvocation $MyInvocation
     try {
         if ($Classic) {
-            $partialPath = 'Microsoft SDKs\Azure\PowerShell\ServiceManagement\Azure\Azure.psd1'
-        } else {
-            $partialPath = 'Microsoft SDKs\Azure\PowerShell\ResourceManager\AzureResourceManager\AzureRM.Profile\AzureRM.Profile.psd1'
+            $partialPaths = @("Microsoft SDKs\Azure\PowerShell\ServiceManagement\Azure\Azure.psd1")
+        }
+        else {
+            $partialPath = @("Microsoft SDKs\Azure\PowerShell\ResourceManager\AzureResourceManager\Az.Profile\Az.Profile.psd1", "Microsoft SDKs\Azure\PowerShell\ResourceManager\AzureResourceManager\AzureRM.Profile\AzureRM.Profile.psd1")
         }
 
         foreach ($programFiles in @(${env:ProgramFiles(x86)}, $env:ProgramFiles)) {
@@ -103,28 +119,31 @@ function Import-FromSdkPath {
                 continue
             }
 
-            $path = [System.IO.Path]::Combine($programFiles, $partialPath)
-            Write-Verbose "Checking if path exists: $path"
-            if (Test-Path -LiteralPath $path -PathType Leaf) {
-                # Import the module.
-                Write-Host "##[command]Import-Module -Name $path -Global"
-                $module = Import-Module -Name $path -Global -PassThru
-                Write-Verbose "Imported module version: $($module.Version)"
+            foreach ($partialPath in $partialPaths) {
+                $path = [System.IO.Path]::Combine($programFiles, $partialPath)
+                Write-Verbose "Checking if path exists: $path"
+                if (Test-Path -LiteralPath $path -PathType Leaf) {
+                    # Import the module.
+                    Write-Host "##[command]Import-Module -Name $path -Global"
+                    $module = Import-Module -Name $path -Global -PassThru
+                    Write-Verbose "Imported module version: $($module.Version)"
 
-                # Store the mode.
-                $script:isClassic = $Classic.IsPresent
+                    # Store the mode.
+                    $script:isClassic = $Classic.IsPresent
 
-                if ($Classic) {
-                    # The Azure module was imported.
-                    $script:classicVersion = $module.Version
+                    if ($Classic) {
+                        # The Azure module was imported.
+                        $script:classicVersion = $module.Version
+                    }
+
+                    return $true
                 }
-
-                return $true
             }
         }
 
         return $false
-    } finally {
+    }
+    finally {
         Trace-VstsLeavingInvocation $MyInvocation
     }
 }
