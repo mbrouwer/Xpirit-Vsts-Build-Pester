@@ -53,8 +53,8 @@
       "defaultValue": "",
       "required": true,
       "helpMarkDown": "Azure Resource Manager subscription to configure before running Az PowerShell",
-      "visibleRule": "ConnectedServiceNameSelector = ConnectedServiceNameAz"
-    }
+      "visibleRule": "ConnectedServiceNameSelector = ConnectedServiceNameARM"
+    },
     {
       "name": "ItemSpec",
       "type": "string",

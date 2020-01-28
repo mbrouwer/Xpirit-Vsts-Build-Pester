@@ -43,7 +43,7 @@ function Import-FromModulePath {
         }
 
         # Attempt to resolve the module.
-        Write-Verbose "Attempting to find the module '$name' from the module path."
+        Write-Verbose "Attempting to find the module $($name) from the module path."
         $module = Get-Module -Name $name -ListAvailable | Select-Object -First 1
         if (!$module) {
             return $false
