@@ -1,8 +1,8 @@
 {
   "manifestVersion": 1,
-  "id": "PeterGroenewegen-Xpirit-Vsts-Build-Pester",
-  "name": "Pester unittest build task",
-  "version": "3.0.0",
+  "id": "Azure Pester",
+  "name": "Azure Pester Azure Pipeline Task",
+  "version": "3.0.1,
   "publisher": "CloudWarrior",
   "public": false,
   "targets": [
@@ -62,31 +62,31 @@
   },
   "files": [
     {
-      "path": "Xpirit-Vsts-Build-Pester"
+      "path": "Pester"
     },
     {
-      "path": "Xpirit-Vsts-Build-PesterAzure"
+      "path": "PesterAzure"
     }
   ],
   "contributions": [
     {
-      "id": "Xpirit-Vsts-Build-Pester",
+      "id": "Pester",
       "type": "ms.vss-distributed-task.task",
       "targets": [
         "ms.vss-distributed-task.tasks"
       ],
       "properties": {
-        "name": "Xpirit-Vsts-Build-Pester"
+        "name": "Pester"
       }
     },
     {
-      "id": "Xpirit-Vsts-Build-PesterAzure",
+      "id": "PesterAzure",
       "type": "ms.vss-distributed-task.task",
       "targets": [
         "ms.vss-distributed-task.tasks"
       ],
       "properties": {
-        "name": "Xpirit-Vsts-Build-PesterAzure"
+        "name": "PesterAzure"
       }
     }
   ]
