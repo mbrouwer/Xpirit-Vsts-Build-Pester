@@ -33,7 +33,7 @@ function Initialize-Azure {
         $storageAccount = Get-VstsInput -Name StorageAccount
 
         # Import/initialize the Azure module.
-        Import-AzureModule -PreferAzureRM:($serviceNameInput -eq 'ConnectedServiceNameARM')
+        Import-AzureModule -Module $serviceNameInput
         Initialize-AzureSubscription -Endpoint $endpoint -StorageAccount $storageAccount
     } finally {
         Trace-VstsLeavingInvocation $MyInvocation

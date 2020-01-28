@@ -1,27 +1,21 @@
 ﻿function Import-AzureModule {
     [CmdletBinding()]
-    param([switch]$PreferAzureRM)
+    param(
+        [switch]$PreferAzureRM,
+        [string]$Module
+    )
 
     Trace-VstsEnteringInvocation $MyInvocation
     try {
         Write-Verbose "Env:PSModulePath: '$env:PSMODULEPATH'"
-        if ($PreferAzureRM) {
-            if (!(Import-FromModulePath -Classic:$false) -and
-                !(Import-FromSdkPath -Classic:$false) -and
-                !(Import-FromModulePath -Classic:$true) -and
-                !(Import-FromSdkPath -Classic:$true))
+
+            if (!(Import-FromModulePath -module $Module) -and
+                !(Import-FromSdkPath --module $Module) -and
+                !(Import-FromModulePath -module $Module) -and
+                !(Import-FromSdkPath -module $Module))
             {
                 throw (Get-VstsLocString -Key AZ_ModuleNotFound)
             }
-        } else {
-            if (!(Import-FromModulePath -Classic:$true) -and
-                !(Import-FromSdkPath -Classic:$true) -and
-                !(Import-FromModulePath -Classic:$false) -and
-                !(Import-FromSdkPath -Classic:$false))
-            {
-                throw (Get-VstsLocString -Key AZ_ModuleNotFound)
-            }
-        }
 
         # Validate the Classic version.
         $minimumVersion = [version]'0.8.10.1'
@@ -36,15 +30,16 @@
 function Import-FromModulePath {
     [CmdletBinding()]
     param(
-        [switch]$Classic)
+        [string]$Module)
 
     Trace-VstsEnteringInvocation $MyInvocation
     try {
         # Determine which module to look for.
-        if ($Classic) {
-            $name = "Azure"
-        } else {
-            $name = "AzureRM"
+        switch ($Module) {
+            "ConnectedServiceName" { $name = "Azure" }
+            "ConnectedServiceNameARM" { $name = "AzureRM" }
+            "ConnectedServiceNameAz" { $name = "Az" }
+            Default {}
         }
 
         # Attempt to resolve the module.
@@ -69,7 +64,7 @@ function Import-FromModulePath {
             # The AzureRM module was imported.
 
             # Validate the AzureRM.profile module can be found.
-            $profileModule = Get-Module -Name AzureRM.profile -ListAvailable | Select-Object -First 1
+            $profileModule = Get-Module -Name "$(name).profile" -ListAvailable | Select-Object -First 1
             if (!$profileModule) {
                 throw (Get-VstsLocString -Key AZ_AzureRMProfileModuleNotFound)
             }
@@ -88,14 +83,16 @@ function Import-FromModulePath {
 
 function Import-FromSdkPath {
     [CmdletBinding()]
-    param([switch]$Classic)
+    param([string]$Module)
 
     Trace-VstsEnteringInvocation $MyInvocation
     try {
-        if ($Classic) {
-            $partialPath = 'Microsoft SDKs\Azure\PowerShell\ServiceManagement\Azure\Azure.psd1'
-        } else {
-            $partialPath = 'Microsoft SDKs\Azure\PowerShell\ResourceManager\AzureResourceManager\AzureRM.Profile\AzureRM.Profile.psd1'
+
+        switch ($Module) {
+            "ConnectedServiceName" { $partialPath = 'Microsoft SDKs\Azure\PowerShell\ServiceManagement\Azure\Azure.psd1' }
+            "ConnectedServiceNameARM" { $partialPath = 'Microsoft SDKs\Azure\PowerShell\ResourceManager\AzureResourceManager\AzureRM.Profile\AzureRM.Profile.psd1' }
+            "ConnectedServiceNameAz" { $partialPath = 'Microsoft SDKs\Azure\PowerShell\ResourceManager\AzureResourceManager\Az.Profile\Az.Profile.psd1' }
+            Default {}
         }
 
         foreach ($programFiles in @(${env:ProgramFiles(x86)}, $env:ProgramFiles)) {
